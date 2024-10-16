@@ -4,14 +4,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 小明用观察者模式设计了一个异步消息传递程序并期望实现消费顺序性，但结果并不理想
- * 例：小明想发“爸爸，我爱你”给他dad，但是他dad可能收到的是“我，爱你爸爸”
+ * 小故事：小明用观察者模式设计了一个异步消息传递程序并期望实现消费顺序性，但结果并不理想
+ * 例：小明想发“在爱奇艺看电影”到客户端，但客户端可能收到的是“爱奇艺在看电影”
  * 1. 在不改变异步特性的要求下，使消息顺序得到保证
- * 2. 观察哪些地方可能造成内存泄漏，并优化它吧
+ * 2. 观察哪些地方可能造成内存泄漏，优化它！
  */
 public class ObserverDemo {
-
-    // 观察者
+    //观察者
     static class Observer {
         private final String message;
 
@@ -24,10 +23,9 @@ public class ObserverDemo {
         }
     }
 
-    // 主题类
+    //主题类 提供异步
     static class Subject {
         private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-
         private final List<Observer> observers = new ArrayList<>();
 
         public void registerObserver(Observer observer) {
@@ -35,25 +33,16 @@ public class ObserverDemo {
         }
 
         public void notifyObservers() {
-            for (Observer observer : observers) {
+            for (Observer observer : observers)
                 executor.submit(observer::update);
-            }
         }
     }
 
     public static void main(String[] args) {
         Subject subject = new Subject();
-
-        Observer observer1 = new Observer("爸爸");
-        Observer observer2 = new Observer("，");
-        Observer observer3 = new Observer("我");
-        Observer observer4 = new Observer("爱你");
-
-        subject.registerObserver(observer1);
-        subject.registerObserver(observer2);
-        subject.registerObserver(observer3);
-        subject.registerObserver(observer4);
-
+        subject.registerObserver(new Observer("在"));
+        subject.registerObserver(new Observer("爱奇艺"));
+        subject.registerObserver(new Observer("看电影"));
         subject.notifyObservers();
     }
 }

@@ -2,21 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 检查单例模式编写的正确性 并为防止可能产生的bug进行优化
+ * 1. 修改单例模式保证线程安全
+ * 2. 优化代码以防止可能产生的内存泄漏问题
  */
 public class SingletonDemo {
     private static SingletonDemo instance;
     private List<Listener> listeners = new ArrayList<Listener>();
-
     private SingletonDemo() {}
 
     public static SingletonDemo getInstance() {
         synchronized (SingletonDemo.class) {
-            if (instance == null) {
+            if (instance == null)
                 instance = new SingletonDemo();
-            }
         }
-
         return instance;
     }
 
