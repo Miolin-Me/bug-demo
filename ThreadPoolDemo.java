@@ -31,7 +31,7 @@ public class ThreadPoolDemo {
 
     static void example(long loop) {
         ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
-        for (int i = 0; i < 100000000; i++) {
+        for (int i = 0; i < loop; i++) {
             pool.execute(new Task(i));
         }
     }
