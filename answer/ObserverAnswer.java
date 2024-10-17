@@ -39,7 +39,7 @@ public class ObserverAnswer {
         public void notifyObservers() {
             CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
             for (Observer observer : observers) {
-                future = future.thenRunAsync(observer::update);
+                future = future.thenRunAsync(observer::update, executor);
             }
             future.join();
         }
