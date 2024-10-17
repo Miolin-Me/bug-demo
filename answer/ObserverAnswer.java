@@ -31,11 +31,8 @@ public class ObserverAnswer {
             observers.add(observer);
         }
 
-        public void unregisterObserver(Observer observer) {
-            observers.remove(observer);
-        }
-
         public void shutDown() {
+            observers.clear();
             executor.shutdown();
         }
 
@@ -50,16 +47,10 @@ public class ObserverAnswer {
 
     public static void main(String[] args) {
         Subject subject = new Subject();
-        Observer observer1 = new Observer("在");
-        Observer observer2 = new Observer("爱奇艺");
-        Observer observer3 = new Observer("看电影");
-        subject.registerObserver(observer1);
-        subject.registerObserver(observer2);
-        subject.registerObserver(observer3);
+        subject.registerObserver(new Observer("在"));
+        subject.registerObserver(new Observer("爱奇艺"));
+        subject.registerObserver(new Observer("看电影"));
         subject.notifyObservers();
-        subject.unregisterObserver(observer1);
-        subject.unregisterObserver(observer2);
-        subject.unregisterObserver(observer3);
         subject.shutDown();
     }
 }
